@@ -7,7 +7,7 @@ use thirtyfour::{DesiredCapabilities, WebDriver};
 
 pub async fn start_web_driver() -> WebDriver {
     let mut caps = DesiredCapabilities::chrome();
-    // caps.set_headless().unwrap();
+    caps.set_headless().unwrap();
 
     // TODO: make this compatible with windows idk
     let home_dir: String = env::var("HOME").unwrap();
