@@ -5,6 +5,11 @@ A cli tool to see and read your emails from Piaget. This tool scrapes the site <
 > [!WARNING]  
 > This project just works for Linux (and probably MacOS).
 
+## Features
+- Automatic login.
+- Read all your emails in [Markdown](https://en.wikipedia.org/wiki/Markdown) with ${{\color{Goldenrod}{\textsf{pretty colors}}}}\$.
+- Download any email attachment.
+
 ## Usage
 ```
 CLI tool to read notifications from Piaget
