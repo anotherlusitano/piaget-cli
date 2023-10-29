@@ -2,6 +2,8 @@
 A cli tool to see and read your emails from Piaget. This tool scrapes the site <a href="https://inforestudante.ipiaget.org">infoestudante</a>
 </h3>
 
+![screenshot](./screenshots/screenshot.png)
+
 > [!WARNING]  
 > This project just works for Linux (and probably MacOS).
 
