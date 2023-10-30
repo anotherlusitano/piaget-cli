@@ -30,47 +30,41 @@ pub async fn display_notification(driver: &WebDriver, notification: Notification
     skin.bold.set_fg(rgb(255, 187, 0));
     skin.print_text(&content);
 
-    if notification.attachment.is_some() {
-        let attachment_text = notification
-            .attachment
-            .as_ref()
-            .unwrap()
-            .clone()
-            .text()
-            .await
-            .unwrap();
-        let attachment_link = notification.attachment.unwrap().attr("href").await.unwrap();
+    if notification.attachments.is_some() {
+        skin.print_text("**Anexo(s):**");
 
-        skin.print_text(format!("**Anexo(s):** {}\n", &attachment_text).as_str());
-        print_text("----");
+        for attachment in notification.attachments.unwrap() {
+            let question = format!(
+                "Do you want to download **{}**?",
+                attachment.text().await.unwrap()
+            );
 
-        let yes_respond_idk = format!("Yes, I'd like to download **{}**.", attachment_text);
+            let url = format!(
+                "https://inforestudante.ipiaget.org/nonio/notificacoes/{}",
+                attachment.attr("href").await.unwrap().unwrap()
+            );
+            ask!(&skin, question, {
+                ('y', "Yes.") => {
+                    driver.goto(url).await.unwrap();
 
-        let url = format!(
-            "https://inforestudante.ipiaget.org/nonio/notificacoes/{}",
-            attachment_link.unwrap()
-        );
-        ask!(&skin, "Do you want to download this attachment?", {
-            ('y', yes_respond_idk) => {
-                driver.goto(url).await.unwrap();
+                    // TODO: make this compatible with windows idk
+                    let home_dir: String = env::var("HOME").unwrap();
+                    let download_dir: String = format!("{}/Downloads/", home_dir);
 
-                // TODO: make this compatible with windows idk
-                let home_dir: String = env::var("HOME").unwrap();
-                let download_dir: String = format!("{}/Downloads/", home_dir);
-
-                // BUG: this don't download the whole name of the file
-                for file in std::path::Path::new(&download_dir).read_dir().unwrap() {
-                    let file_path = file.unwrap().path();
-                    while file_path.with_extension("crdownload") == file_path && file_path.exists() {
-                        sleep(Duration::from_millis(500));
+                    // BUG: this don't download the whole name of the file
+                    for file in std::path::Path::new(&download_dir).read_dir().unwrap() {
+                        let file_path = file.unwrap().path();
+                        while file_path.with_extension("crdownload") == file_path && file_path.exists() {
+                            sleep(Duration::from_millis(500));
+                        }
                     }
+                    skin.print_text("**Download completed!**");
                 }
-                println!("Download completed!");
-            }
-            ('n', "No.") => {
-            }
-        });
-    } else {
-        print_text("----");
+                ('n', "No.") => {
+                }
+            });
+            print_text("\n");
+        }
     }
+    print_text("----");
 }

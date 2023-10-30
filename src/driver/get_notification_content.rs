@@ -11,12 +11,11 @@ pub async fn get_notification_content(driver: &WebDriver) -> Notification {
         notification_content.push(content.text().await.unwrap());
     }
 
-    let attachment: Option<WebElement> = {
+    let attachments: Option<Vec<WebElement>> = {
         if contents.len() > 5 {
-            // TODO: make support for many attachments
             Some(
                 contents[5]
-                    .find(By::ClassName("botaoDownload"))
+                    .find_all(By::ClassName("botaoDownload"))
                     .await
                     .unwrap(),
             )
@@ -31,6 +30,6 @@ pub async fn get_notification_content(driver: &WebDriver) -> Notification {
         date_received: notification_content[2].to_owned(),
         date_file: Some(notification_content[3].to_owned()),
         category: notification_content[4].to_owned(),
-        attachment,
+        attachments,
     }
 }

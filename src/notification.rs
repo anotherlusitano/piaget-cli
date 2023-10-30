@@ -9,7 +9,7 @@ pub struct Notification {
     pub date_received: String,
     pub date_file: Option<String>,
     pub category: String,
-    pub attachment: Option<WebElement>,
+    pub attachments: Option<Vec<WebElement>>,
 }
 
 impl fmt::Display for Notification {

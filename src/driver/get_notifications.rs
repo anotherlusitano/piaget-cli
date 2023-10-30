@@ -54,7 +54,7 @@ pub async fn get_notifications(driver: &WebDriver, filter: NotificationFilter) {
                 date_received: title_and_date[1].text().await.unwrap(),
                 date_file: None,
                 body: None,
-                attachment: None,
+                attachments: None,
             };
 
             notifications_list.push(notification);
