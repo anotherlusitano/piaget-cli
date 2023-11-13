@@ -6,6 +6,7 @@ use clap::Command;
 use cli::display_notification::display_notification;
 use driver::{
     get_notification_content::get_notification_content, get_notifications::get_notifications,
+    get_unread_notifications_number::get_unread_notifications_number,
 };
 use notification_filter::NotificationFilter;
 use std::{thread::sleep, time::Duration};
@@ -31,7 +32,12 @@ async fn main() {
         .subcommand(
             Command::new("unread")
                 .about("Search for your unread notifications")
-                .short_flag('u'),
+                .short_flag('u')
+                .subcommand(
+                    Command::new("number")
+                        .about("Get the number of your unread notifications")
+                        .short_flag('n'),
+                ),
         )
         .get_matches();
 
@@ -54,14 +60,22 @@ async fn main() {
 
             get_notifications(&driver, filter).await;
         }
-        Some(("unread", _)) => {
-            let filter = NotificationFilter {
-                index: 2,
-                tag: "b".to_owned(),
-            };
+        Some(("unread", cmd)) => match cmd.subcommand() {
+            Some(("number", _)) => {
+                get_unread_notifications_number(&driver).await;
+                kill_web_driver(&driver).await;
+                kill_chrome_driver(chromedriver);
+                return;
+            }
+            _ => {
+                let filter = NotificationFilter {
+                    index: 2,
+                    tag: "b".to_owned(),
+                };
 
-            get_notifications(&driver, filter).await;
-        }
+                get_notifications(&driver, filter).await;
+            }
+        },
         _ => println!("No Choice?"),
     }
 
