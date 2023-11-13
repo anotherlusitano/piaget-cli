@@ -26,7 +26,10 @@ pub async fn start_web_driver() -> WebDriver {
 pub fn start_chrome_driver() -> Child {
     let chromedriver;
     {
-        chromedriver = Command::new("chromedriver").spawn().unwrap();
+        chromedriver = Command::new("chromedriver")
+            .stdout(std::process::Stdio::null())
+            .spawn()
+            .unwrap();
     }
 
     chromedriver
