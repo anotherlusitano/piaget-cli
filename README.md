@@ -21,7 +21,15 @@ Usage: piaget-cli <COMMAND>
 Commands:
   read, -r    Search for your read notifications
   unread, -u  Search for your unread notifications
-  help        Print this message or the help of the given subcommand(s)
+    Usage: piaget-cli {unread|-u} [COMMAND]
+    
+    Commands:
+      number, -n  Get the number of your unread notifications
+      help        Print this message or the help of the given subcommand(s)
+    
+    Options:
+      -h, --help  Print help
+      help        Print this message or the help of the given subcommand(s)
 
 Options:
   -h, --help  Print help
