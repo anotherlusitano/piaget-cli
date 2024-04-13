@@ -1,4 +1,4 @@
-use std::error::Error;
+use std::{error::Error, process::exit};
 
 use thirtyfour::prelude::*;
 
@@ -7,7 +7,12 @@ use crate::user::User;
 pub async fn verify_login(driver: &WebDriver, user: User) -> Result<(), Box<dyn Error>> {
     let url = "https://inforestudante.ipiaget.org";
 
-    driver.goto(url).await?;
+    // I was tired of getting a long error message
+    // every time I didn't have wifi
+    if (driver.goto(url).await).is_err() {
+        eprintln!("?");
+        exit(1)
+    }
 
     let username_input = driver.find(By::Id("username")).await?;
 
