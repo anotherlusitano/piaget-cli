@@ -9,7 +9,9 @@ pub async fn get_unread_notifications_number(driver: &WebDriver) {
 
     let notif_element = notifications_dash.query(By::Css("strong"));
 
-    if notif_element.not_exists().await.unwrap() {
+    let has_notifications: bool = notif_element.exists().await.unwrap();
+
+    if !has_notifications {
         println!("0");
         return;
     }
