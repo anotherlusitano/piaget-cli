@@ -1,8 +1,12 @@
 [package]
 name = "piaget-cli"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+description = "CLI tool to read notifications from inforestudante of Piaget"
+repository = "https://github.com/anotherlusitano/piaget-cli"
 authors = ["João Ribeiro"]
+license = "MIT"
+keywords = ["cli", "notifications", "email", "piaget", "inforestudante"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
